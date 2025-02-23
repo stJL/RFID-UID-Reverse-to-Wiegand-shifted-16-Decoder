@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Wiegand Reconstructor</title>
     <style>
@@ -9,6 +10,7 @@
             padding: 20px;
             background-color: #f4f4f4;
         }
+
         .container {
             width: 500px;
             margin: 20px auto;
@@ -17,15 +19,18 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
         h1 {
             text-align: center;
             color: #333;
         }
+
         label {
             display: block;
             margin-bottom: 5px;
             color: #555;
         }
+
         input[type="number"] {
             width: 100%;
             padding: 10px;
@@ -34,6 +39,7 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
+
         button {
             background-color: #007bff;
             color: white;
@@ -42,38 +48,116 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
         button:hover {
             background-color: #0056b3;
         }
+
         p {
             margin-top: 20px;
             color: #333;
         }
+
         .language-button {
             padding: 5px 10px;
             margin-right: 10px;
             cursor: pointer;
-            background-color: #e0e0e0;
+            background-color: #999999;
             border: none;
             border-radius: 4px;
         }
+
         .language-button:hover {
             background-color: #d0d0d0;
         }
+
+        .copy-button {
+            background-color: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .copy-button:hover {
+            background-color: #218838;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+
+        #savedResults {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+
+        #savedResults h3 {
+            margin-top: 0;
+        }
+
+        .language-icon {
+            font-size: 24px;
+            cursor: pointer;
+            position: relative;
+        }
+        .language-tooltip {
+            visibility: hidden;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            padding: 5px 10px;
+            border-radius: 6px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -50px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .language-icon:hover .language-tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
     </style>
 </head>
+
 <body>
+    <div>
+        <button class="language-button" onclick="changeLanguage('zh-TW')">繁體中文</button>
+        <button class="language-button" onclick="changeLanguage('en')">English</button>
+    </div>
+
     <div class="container">
         <h1><span data-i18n="title">Wiegand Reconstructor</span></h1>
         <label for="reverseWiegand"><span data-i18n="label">Wiegand (Reverse):</span></label>
         <input type="number" id="reverseWiegand" name="reverseWiegand"><br><br>
         <button onclick="reconstructWiegand()"><span data-i18n="button">推導</span></button>
         <p id="result"></p>
+        <button class="copy-button" onclick="copyResult()"><span data-i18n="copy">複製結果</span></button>
+        <p class="error-message" id="errorMessage"></p>
 
-        <div>
-            <button class="language-button" onclick="changeLanguage('zh-TW')">繁體中文</button>
-            <button class="language-button" onclick="changeLanguage('en')">English</button>
+        <div id="savedResults">
+            <h3><span data-i18n="savedResultsTitle">儲存的結果：</span></h3>
         </div>
+        <button class="copy-button" onclick="copyAllSavedResults()"><span data-i18n="copyAll">複製所有結果</span></button>
     </div>
 
     <script>
@@ -83,13 +167,27 @@
                 "title": "Wiegand 推導工具",
                 "label": "Wiegand (Reverse):",
                 "button": "推導",
-                "result": "Wiegand (Reverse shifted 16, reconstructed): "
+                "result": "Wiegand (Reverse shifted 16, reconstructed): ",
+                "copy": "複製結果",
+                "invalidInput": "請輸入有效的數字。",
+                "copied": "已複製到剪貼簿！",
+                "savedResultsTitle": "儲存的結果：",
+                "copyAll": "複製所有結果",
+                "copiedAll": "所有結果已複製到剪貼簿！",
+                "noSavedResults": "沒有儲存的結果。"
             },
             "en": {
                 "title": "Wiegand Reconstructor",
                 "label": "Wiegand (Reverse):",
                 "button": "Reconstruct",
-                "result": "Wiegand (Reverse shifted 16, reconstructed): "
+                "result": "Wiegand (Reverse shifted 16, reconstructed): ",
+                "copy": "Copy Result",
+                "invalidInput": "Please enter a valid number.",
+                "copied": "Copied to clipboard!",
+                "savedResultsTitle": "Saved Results:",
+                "copyAll": "Copy All Results",
+                "copiedAll": "All results copied to clipboard!",
+                "noSavedResults": "No saved results."
             }
         };
 
@@ -102,14 +200,14 @@
 
         function updateTranslations() {
             var elements = document.querySelectorAll("[data-i18n]");
-            elements.forEach(function(element) {
+            elements.forEach(function (element) {
                 var key = element.getAttribute("data-i18n");
                 element.textContent = translations[currentLanguage][key];
             });
         }
 
         // 自動推導
-        document.getElementById("reverseWiegand").addEventListener("keyup", function(event) {
+        document.getElementById("reverseWiegand").addEventListener("keyup", function (event) {
             if (event.key === "Enter") {
                 reconstructWiegand();
             }
@@ -117,14 +215,115 @@
 
         function reconstructWiegand() {
             var reverseWiegand = parseInt(document.getElementById("reverseWiegand").value);
+            if (isNaN(reverseWiegand)) {
+                document.getElementById("errorMessage").textContent = translations[currentLanguage]["invalidInput"];
+                return;
+            }
+            document.getElementById("errorMessage").textContent = ""; // 清除錯誤訊息
             var shiftedValue = reverseWiegand >> 16;
             var remainder = reverseWiegand - (shiftedValue * 65536);
             var reconstructedWiegand = shiftedValue * 100000 + remainder;
             document.getElementById("result").innerHTML = translations[currentLanguage]["result"] + reconstructedWiegand;
+            document.getElementById("reverseWiegand").value = ""; // 清除輸入框內容
+
+            document.getElementById("result").innerHTML = translations[currentLanguage]["result"] + reconstructedWiegand;
+            document.getElementById("reverseWiegand").value = "";
+
+            // 儲存結果到 localStorage
+            saveResult(reconstructedWiegand);
+
+            // 顯示所有儲存的結果
+            displaySavedResults();
+        }
+
+        function saveResult(result) {
+            var savedResults = JSON.parse(localStorage.getItem("wiegandResults")) || [];
+            savedResults.push(result);
+            localStorage.setItem("wiegandResults", JSON.stringify(savedResults));
+        }
+
+        function displaySavedResults() {
+            var savedResults = JSON.parse(localStorage.getItem("wiegandResults")) || [];
+            var resultsDiv = document.getElementById("savedResults");
+            if (!resultsDiv) {
+                resultsDiv = document.createElement("div");
+                resultsDiv.id = "savedResults";
+                document.querySelector(".container").appendChild(resultsDiv);
+            }
+            resultsDiv.innerHTML = "<h3>" + translations[currentLanguage]["savedResultsTitle"] + "</h3>";
+            savedResults.forEach(function(result) {
+                resultsDiv.innerHTML += "<p>" + result + "</p>";
+            });
+        }
+
+        // 頁面載入時清除 localStorage (只在新開網頁時執行一次)
+        if (performance.navigation.type === 0) { // 檢查是否為新開網頁
+            localStorage.removeItem("wiegandResults");
+        }
+
+        // 頁面載入時顯示儲存的結果
+        displaySavedResults();
+
+        function copyResult() {
+            var resultText = document.getElementById("result").textContent;
+            var resultNumber = resultText.replace(translations[currentLanguage]["result"], "").trim(); // 使用 trim() 去除前後空白
+
+            if (!resultNumber) { // 檢查 resultNumber 是否為空
+                showNotification(translations[currentLanguage]["noSavedResults"]);
+                return;
+            }
+
+            navigator.clipboard.writeText(resultNumber).then(function () {
+                showNotification(translations[currentLanguage]["copied"]);
+            }, function (err) {
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        function copyAllSavedResults() {
+            var savedResults = JSON.parse(localStorage.getItem("wiegandResults")) || [];
+            if (savedResults.length === 0) {
+                showNotification(translations[currentLanguage]["noSavedResults"]);
+                return;
+            }
+            var resultsText = savedResults.join("\n"); // 使用換行符號分隔結果
+            navigator.clipboard.writeText(resultsText).then(function () {
+                showNotification(translations[currentLanguage]["copiedAll"]);
+            }, function (err) {
+                console.error('Could not copy all results: ', err);
+            });
+        }
+
+        function showNotification(message) {
+            var notification = document.createElement("div");
+            notification.textContent = message;
+            notification.style.position = "fixed";
+            notification.style.top = "20px";
+            notification.style.right = "20px";
+            notification.style.backgroundColor = "rgba(0, 0, 0, 0.7)";
+            notification.style.color = "white";
+            notification.style.padding = "10px 20px";
+            notification.style.borderRadius = "5px";
+            notification.style.zIndex = "1000";
+            document.body.appendChild(notification);
+            setTimeout(function () {
+                document.body.removeChild(notification);
+            }, 3000); // 3 秒後消失
         }
 
         // 初始載入時更新翻譯
+        function updateTranslations() {
+            var elements = document.querySelectorAll("[data-i18n]");
+            elements.forEach(function(element) {
+                var key = element.getAttribute("data-i18n");
+                element.textContent = translations[currentLanguage][key];
+            });
+            displaySavedResults(); // 在翻譯更新後顯示儲存的結果
+        }
+
         updateTranslations();
+
     </script>
 </body>
+
 </html>
