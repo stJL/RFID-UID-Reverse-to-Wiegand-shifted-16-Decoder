@@ -16,6 +16,7 @@
 ## 簡介
 
 這個網站提供一個 Wiegand 重構工具，用於將反向 Wiegand 碼轉換為原始 Wiegand 碼。
+* *(提示：本程式碼的位移方法可能與某些 Soyal 系列門禁系統相符，但需進行實際測試驗證。)*
 
 ## 功能
 
@@ -58,6 +59,19 @@
 * 請確保輸入有效的 UID 碼。
 * 當使用“複製所有結果”時，結果會使用換行符號分段。
 
+**重要提示：**
+* 本專案僅為調查工具，實際 Wiegand 編碼可能更複雜。
+* 為了獲得準確的 Wiegand 碼，您需要訪問控制系統的規格。
+* 本專案不包含奇偶校驗位計算。
+
+### 貢獻 (Contributions)
+
+歡迎任何形式的貢獻！如果您有任何改進建議或發現任何錯誤，請隨時提交 Pull Request 或 Issues。
+
+### 授權 (License)
+
+本專案使用 MIT 授權。詳細資訊請參閱 `LICENSE` 檔案。
+
 
 # Wiegand (Reverse) Reconstructor
 
@@ -71,6 +85,7 @@ If you have an ESP8266 development board and want to learn how to implement Wieg
 
 
 Enter the decimal value of `Wiegand (Reverse)` to get the derived result.
+* *(Hint: The shift method in this code may be compatible with some Soyal series access control systems, but actual testing and verification are required.)*
 
 ## Introduction
 
@@ -116,6 +131,19 @@ This website provides a Wiegand reconstructor tool to convert reverse Wiegand co
 
 * Please ensure that you enter a valid UID code.
 * When using "Copy All Results," the results will be separated by line breaks.
+
+**Important Notes:**
+* This project is only an investigative tool, and real Wiegand encoding may be more complex.
+* To get accurate Wiegand codes, you need the specifications of your access control system.
+* This project does not include parity bit calculations.
+
+### Contributions
+
+Contributions of any kind are welcome! If you have any suggestions for improvement or find any bugs, please feel free to submit a Pull Request or Issues.
+
+### License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
 
 
 
