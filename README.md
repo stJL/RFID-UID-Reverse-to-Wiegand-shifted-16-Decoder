@@ -4,7 +4,7 @@
 ## Wiegand (Reverse) 重構工具
 如果您沒有 ESP8266 開發板，但想從 `Wiegand (Reverse)` 推導出 `Wiegand (Reverse shifted 16, reconstructed)`，可以使用以下方法：
 
-* **線上工具：** 使用 [線上 Wiegand 推導工具](https://stjl.github.io/RFID-UID-Reverse-to-Wiegand-shifted-16-Decoder)。
+* **線上工具：** 使用 [線上 Wiegand 推導工具](https://stjl.github.io/UID-Reverse-to-Wiegand-shifted-16-Decoder-website/)。
 
 如果您有 ESP8266 開發板，並想了解如何在 ESP8266 上配合 RFID-RC522 實現 Wiegand Reverse 功能，請查看我的另一個專案：
 
@@ -63,7 +63,7 @@
 
 If you don't have an ESP8266 development board but want to derive `Wiegand (Reverse shifted 16, reconstructed)` from `Wiegand (Reverse)`, you can use the following method:
 
-* **Online Tool:** Use the [Online Wiegand Reconstructor](https://stjl.github.io/RFID-UID-Reverse-to-Wiegand-shifted-16-Decoder).
+* **Online Tool:** Use the [Online Wiegand Reconstructor](https://stjl.github.io/UID-Reverse-to-Wiegand-shifted-16-Decoder-website/).
 
 If you have an ESP8266 development board and want to learn how to implement Wiegand Reverse functionality with RFID-RC522 on ESP8266, please check out my other project:
 
