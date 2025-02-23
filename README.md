@@ -1,7 +1,11 @@
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 
-## Wiegand (Reverse) 重構工具
+
+## 繁體中文說明 (Traditional Chinese Description)
+
+本專案是一個 網頁讀取 RFID 標籤的唯一識別碼（UID），並嘗試逆向工程將其轉換為 34 位元 Wiegand 碼。Wiegand 碼廣泛應用於門禁系統，用於識別卡片或標籤。
+
 如果您沒有 ESP8266 開發板，但想從 `Wiegand (Reverse)` 推導出 `Wiegand (Reverse shifted 16, reconstructed)`，可以使用以下方法：
 
 * **線上工具：** 使用 [線上 Wiegand 推導工具](https://stjl.github.io/UID-Reverse-to-Wiegand-shifted-16-Decoder-website/)。
@@ -13,12 +17,12 @@
 
 輸入 `Wiegand (Reverse)` 的十進制值，即可得到推導結果。
 
-## 簡介
+## 簡介(Introduction)
 
 這個網站提供一個 Wiegand 重構工具，用於將反向 Wiegand 碼轉換為原始 Wiegand 碼。
 * *(提示：本程式碼的位移方法可能與某些 Soyal 系列門禁系統相符，但需進行實際測試驗證。)*
 
-## 功能
+## 功能(Features)
 
 * **Wiegand 碼重構：**
     * 使用者可以在輸入框中輸入反向 Wiegand 碼，然後點擊「推導」按鈕，網站會自動將其轉換為原始 Wiegand 碼。
@@ -31,7 +35,7 @@
 * **錯誤處理：**
     * 如果使用者輸入無效的 UID 碼，網站會顯示錯誤訊息。
 
-## 使用方法
+## 使用方法(Usage)
 
 1.  **輸入 UID 碼：**
     * 在輸入框中輸入您要轉換的反向 Wiegand 碼。
@@ -44,22 +48,22 @@
 5.  **複製所有儲存結果：**
     * 點擊“複製所有結果”按鈕，將所有儲存的結果複製到剪貼簿。
 
-## 技術棧
+## 技術棧(Technology Stack)
 
 * HTML
 * CSS
 * JavaScript
 
-## 儲存
+## 儲存(Storage)
 
 * 轉換結果儲存在瀏覽器的 `localStorage` 中。
 
-## 注意事項
+## 注意事項(Notes)
 
 * 請確保輸入有效的 UID 碼。
 * 當使用“複製所有結果”時，結果會使用換行符號分段。
 
-**重要提示：**
+**重要提示： (Important Notes)**
 * 本專案僅為調查工具，實際 Wiegand 編碼可能更複雜。
 * 為了獲得準確的 Wiegand 碼，您需要訪問控制系統的規格。
 * 本專案不包含奇偶校驗位計算。
@@ -73,7 +77,9 @@
 本專案使用 MIT 授權。詳細資訊請參閱 `LICENSE` 檔案。
 
 
-# Wiegand (Reverse) Reconstructor
+## English Description
+
+This project is an website that reads the Unique Identifier (UID) of an RFID tag and attempts to reverse engineer its conversion to a 34-bit Wiegand code. Wiegand codes are widely used in access control systems to identify cards or tags.
 
 If you don't have an ESP8266 development board but want to derive `Wiegand (Reverse shifted 16, reconstructed)` from `Wiegand (Reverse)`, you can use the following method:
 
