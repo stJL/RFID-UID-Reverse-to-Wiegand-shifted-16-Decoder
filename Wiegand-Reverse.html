@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wiegand Reconstructor</title>
+</head>
+<body>
+    <h1>Wiegand Reconstructor</h1>
+    <label for="reverseWiegand">Wiegand (Reverse):</label>
+    <input type="number" id="reverseWiegand" name="reverseWiegand"><br><br>
+    <button onclick="reconstructWiegand()">推導</button>
+    <p id="result"></p>
+
+    <script>
+        function reconstructWiegand() {
+            var reverseWiegand = parseInt(document.getElementById("reverseWiegand").value);
+            var shiftedValue = reverseWiegand >> 16;
+            var remainder = reverseWiegand - (shiftedValue * 65536);
+            var reconstructedWiegand = shiftedValue * 100000 + remainder;
+            document.getElementById("result").innerHTML = "Wiegand (Reverse shifted 16, reconstructed): " + reconstructedWiegand;
+        }
+    </script>
+</body>
+</html>
