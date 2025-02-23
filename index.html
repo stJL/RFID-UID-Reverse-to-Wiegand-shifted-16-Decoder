@@ -2,22 +2,75 @@
 <html>
 <head>
     <title>Wiegand Reconstructor</title>
+    <style>
+        .language-button {
+            padding: 5px 10px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <h1>Wiegand Reconstructor</h1>
-    <label for="reverseWiegand">Wiegand (Reverse):</label>
+    <h1><span data-i18n="title">Wiegand Reconstructor</span></h1>
+    <label for="reverseWiegand"><span data-i18n="label">Wiegand (Reverse):</span></label>
     <input type="number" id="reverseWiegand" name="reverseWiegand"><br><br>
-    <button onclick="reconstructWiegand()">推導</button>
+    <button onclick="reconstructWiegand()"><span data-i18n="button">推導</span></button>
     <p id="result"></p>
 
+    <div>
+        <button class="language-button" onclick="changeLanguage('zh-TW')">繁體中文</button>
+        <button class="language-button" onclick="changeLanguage('en')">English</button>
+    </div>
+
     <script>
+        // 語言設定
+        var translations = {
+            "zh-TW": {
+                "title": "Wiegand 推導工具",
+                "label": "Wiegand (Reverse):",
+                "button": "推導",
+                "result": "Wiegand (Reverse shifted 16, reconstructed): "
+            },
+            "en": {
+                "title": "Wiegand Reconstructor",
+                "label": "Wiegand (Reverse):",
+                "button": "Reconstruct",
+                "result": "Wiegand (Reverse shifted 16, reconstructed): "
+            }
+        };
+
+        var currentLanguage = "zh-TW"; // 預設語言
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            updateTranslations();
+        }
+
+        function updateTranslations() {
+            var elements = document.querySelectorAll("[data-i18n]");
+            elements.forEach(function(element) {
+                var key = element.getAttribute("data-i18n");
+                element.textContent = translations[currentLanguage][key];
+            });
+        }
+
+        // 自動推導
+        document.getElementById("reverseWiegand").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                reconstructWiegand();
+            }
+        });
+
         function reconstructWiegand() {
             var reverseWiegand = parseInt(document.getElementById("reverseWiegand").value);
             var shiftedValue = reverseWiegand >> 16;
             var remainder = reverseWiegand - (shiftedValue * 65536);
             var reconstructedWiegand = shiftedValue * 100000 + remainder;
-            document.getElementById("result").innerHTML = "Wiegand (Reverse shifted 16, reconstructed): " + reconstructedWiegand;
+            document.getElementById("result").innerHTML = translations[currentLanguage]["result"] + reconstructedWiegand;
         }
+
+        // 初始載入時更新翻譯
+        updateTranslations();
     </script>
 </body>
 </html>
